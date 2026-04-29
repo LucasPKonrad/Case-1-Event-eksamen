@@ -1,3 +1,6 @@
+using Case_1_Event_eksamen.Pages.Services;
+
+
 namespace Case_1_Event_eksamen
 {
     public class Program
@@ -5,11 +8,17 @@ namespace Case_1_Event_eksamen
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
 
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddSingleton<PasswordHasher>();
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSession();
+            builder.Services.AddSingleton<EventService>();
             var app = builder.Build();
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -24,7 +33,7 @@ namespace Case_1_Event_eksamen
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.MapStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();

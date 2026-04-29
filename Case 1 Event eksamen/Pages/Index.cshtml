@@ -4,6 +4,15 @@
     ViewData["Title"] = "Home page";
 }
 
+@if (Model.UserName != null)
+{
+    <p>Logged in as: @Model.UserName (@Model.UserRole)</p>
+}
+else
+{
+    <p>You are not logged in.</p>
+}
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
