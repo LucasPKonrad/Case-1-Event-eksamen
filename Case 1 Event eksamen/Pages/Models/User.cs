@@ -3,9 +3,9 @@
     public class User // Represents a user in the system, including their credentials and role, as well as their associated registrations
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty; // Store the hashed password for security
         public UserRole Role { get; set; } = UserRole.Student;
         public List<Registration> Registrations { get; set; } = new(); // Navigation property for the registrations associated with this user
 

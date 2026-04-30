@@ -1,4 +1,6 @@
 using Case_1_Event_eksamen.Pages.Services;
+using Microsoft.EntityFrameworkCore;
+using Case_1_Event_eksamen.Pages.Data;
 
 
 namespace Case_1_Event_eksamen
@@ -14,9 +16,10 @@ namespace Case_1_Event_eksamen
             builder.Services.AddRazorPages();
 
             builder.Services.AddSingleton<PasswordHasher>();
-            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddScoped<UserService>();
             builder.Services.AddSession();
-            builder.Services.AddSingleton<EventService>();
+            builder.Services.AddScoped<EventService>();
+            builder.Services.AddDbContext<AppDbContexxt>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
             
 
