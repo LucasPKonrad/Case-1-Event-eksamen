@@ -2,7 +2,7 @@
 
 namespace Case_1_Event_eksamen.Pages.Models
 {
-    public class EventInput
+    public class EventInput // Representere de data, der kræves for at oprette en ny begivenhed, inklusive valideringsattributter for at sikre, at de nødvendige oplysninger er korrekt indtastet
     {
         [Required]
         public string Title { get; set; } = string.Empty;

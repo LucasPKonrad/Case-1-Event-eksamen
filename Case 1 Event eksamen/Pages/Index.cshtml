@@ -1,19 +1,61 @@
 ﻿@page
-@model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-}
+@model Case_1_Event_eksamen.Pages.IndexModel
 
-@if (Model.UserName != null)
-{
-    <p>Logged in as: @Model.UserName (@Model.UserRole)</p>
-}
-else
-{
-    <p>You are not logged in.</p>
-}
+<div class="hero-section">
+    <div>
+        <h1>Welcome to Zealand Zoo Events</h1>
+        <p>
+            Discover upcoming activities, gaming nights, football events and social gatherings
+            at Zealand Zoo café.
+        </p>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 </div>
+
+<section class="mt-4">
+    <h2>Upcoming Events</h2>
+
+    @if (Model.Events.Any())
+    {
+        <div class="card-grid">
+            @foreach (var eventItem in Model.Events)
+            {
+                <div class="info-card">
+                    <h2>@eventItem.Title</h2>
+                    <p>@eventItem.Description</p>
+                    <p>
+                        <strong>Start:</strong>
+                        @eventItem.StartTime.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                    <p>
+                        <strong>End:</strong>
+                        @eventItem.EndTime.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+
+                    @if (eventItem.MaxParticipants != null)
+                    {
+                        <p><strong>Max participants:</strong> @eventItem.MaxParticipants</p>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No upcoming events yet.</p>
+    }
+</section>
+
+<section class="card-grid">
+    <div class="info-card">
+        <h2>Upcoming Events</h2>
+        <p>View events hosted at Zealand Zoo and find something you want to join.</p>
+    </div>
+
+    <div class="info-card">
+        <h2>Student Sign-up</h2>
+        <p>Create an account and sign up for events with limited participant spots.</p>
+    </div>
+
+    
+</section>

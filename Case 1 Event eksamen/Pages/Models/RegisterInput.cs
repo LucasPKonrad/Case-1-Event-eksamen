@@ -2,7 +2,7 @@
 
 namespace Case_1_Event_eksamen.Pages.Models
 {
-    public class RegisterInput
+    public class RegisterInput // Representere de data, der kræves for at registrere en ny bruger, inklusive valideringsattributter for at sikre, at de nødvendige oplysninger er korrekt indtastet
     {
         [Required]
         public string Name { get; set; } = string.Empty;

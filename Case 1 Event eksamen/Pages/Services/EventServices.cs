@@ -1,15 +1,22 @@
 ﻿using Case_1_Event_eksamen.Pages.Models;
+using Case_1_Event_eksamen.Pages.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Case_1_Event_eksamen.Pages.Services;
 public class EventService
 {
-    private static readonly List<Event> Events = new();
+    private readonly AppDbContexxt _context;
+
+    public EventService(AppDbContexxt context)
+    {
+        _context = context;
+    }
 
     public bool CreateEvent(EventInput input)
     {
         var newEvent = new Event
         {
-            Id = Events.Count + 1,
             Title = input.Title,
             Description = input.Description,
             StartTime = input.StartTime,
@@ -17,16 +24,17 @@ public class EventService
             MaxParticipants = input.MaxParticipants
         };
 
-        Events.Add(newEvent);
-
-        Console.WriteLine($"Event created: {newEvent.Title}");
-        Console.WriteLine($"Total events: {Events.Count}");
+        _context.Event.Add(newEvent);
+        _context.SaveChanges();
 
         return true;
     }
 
-    public List<Event> GetAllEvents()
+    public List<Event> GetUpcomingEvents()
     {
-        return Events;
+        return _context.Event
+            .Where(e => e.StartTime >= DateTime.Now)
+            .OrderBy(e => e.StartTime)
+            .ToList();
     }
 }

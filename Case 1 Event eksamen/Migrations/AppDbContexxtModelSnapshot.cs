@@ -49,7 +49,7 @@ namespace Case_1_Event_eksamen.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Event");
                 });
 
             modelBuilder.Entity("Case_1_Event_eksamen.Pages.Models.Registration", b =>
@@ -98,8 +98,9 @@ namespace Case_1_Event_eksamen.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -24,7 +24,7 @@ namespace Case_1_Event_eksamen.Pages.Account
         {
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost() 
         {
             Console.WriteLine("REGISTER ONPOST HIT");
 

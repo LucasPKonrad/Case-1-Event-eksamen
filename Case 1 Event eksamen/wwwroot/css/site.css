@@ -29,3 +29,149 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.hero-section {
+    background: linear-gradient(135deg, #1f7a5c, #2fa879);
+    color: white;
+    padding: 70px 40px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+}
+
+    .hero-section h1 {
+        font-size: 44px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .hero-section p {
+        font-size: 18px;
+        max-width: 650px;
+        line-height: 1.6;
+    }
+
+.hero-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.hero-buttons .btn-primary,
+.hero-buttons .btn-secondary {
+    padding: 12px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: white;
+    color: #1f7a5c;
+}
+
+.btn-secondary {
+    border: 2px solid white;
+    color: white;
+}
+
+.login-status {
+    background: #f4f4f4;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+    .login-status.success {
+        background: #e6f6ef;
+        color: #1f7a5c;
+    }
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.info-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+    .info-card h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+
+    .info-card p {
+        color: #555;
+        line-height: 1.5;
+    }
+
+    .info-card a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #1f7a5c;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+@media (max-width: 800px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-section h1 {
+        font-size: 34px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* ===== NAVBAR BUTTON STYLING ===== */
+
+/* Primary button (Register) */
+.btn-primary {
+    background-color: #1f7a5c;
+    border-color: #1f7a5c;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #166a4e;
+        border-color: #166a4e;
+    }
+
+/* Outline button (Login) */
+.btn-outline-primary {
+    color: #1f7a5c;
+    border-color: #1f7a5c;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #1f7a5c;
+        color: white;
+    }
+
+/* Logout button (red) */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+    .btn-danger:hover {
+        background-color: #bb2d3b;
+        border-color: #bb2d3b;
+    }
+
+/* Status badge in navbar */
+.status-badge {
+    background: #f4f4f4;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
