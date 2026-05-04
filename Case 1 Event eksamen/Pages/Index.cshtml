@@ -3,17 +3,16 @@
 
 <div class="hero-section">
     <div>
-        <h1>Welcome to Zealand Zoo Events</h1>
+        <h1>Zealand Zoo</h1>
         <p>
-            Discover upcoming activities, gaming nights, football events and social gatherings
-            at Zealand Zoo café.
+            Velkommen til Zealand Zoo Cafe. Vi har gaming nights, fodbold turneringer, quiz nights og meget mere. Tjek vores kommende events nedenfor og tilmeld dig for at deltage i sjove og spændende aktiviteter!
         </p>
 
     </div>
 </div>
 
 <section class="mt-4">
-    <h2>Upcoming Events</h2>
+    <h2>Næste Events</h2>
 
     @if (Model.Events.Any())
     {
@@ -24,17 +23,17 @@
                     <h2>@eventItem.Title</h2>
                     <p>@eventItem.Description</p>
                     <p>
-                        <strong>Start:</strong>
+                        <strong>Start Tid:</strong>
                         @eventItem.StartTime.ToString("dd/MM/yyyy HH:mm")
                     </p>
                     <p>
-                        <strong>End:</strong>
+                        <strong>Slut Tid:</strong>
                         @eventItem.EndTime.ToString("dd/MM/yyyy HH:mm")
                     </p>
 
                     @if (eventItem.MaxParticipants != null)
                     {
-                        <p><strong>Max participants:</strong> @eventItem.MaxParticipants</p>
+                        <p><strong>Max deltagere:</strong> @eventItem.MaxParticipants</p>
                     }
                 </div>
             }
@@ -47,15 +46,17 @@
 </section>
 
 <section class="card-grid">
-    <div class="info-card">
-        <h2>Upcoming Events</h2>
-        <p>View events hosted at Zealand Zoo and find something you want to join.</p>
-    </div>
 
     <div class="info-card">
-        <h2>Student Sign-up</h2>
-        <p>Create an account and sign up for events with limited participant spots.</p>
+        <h2>Studenter sign up!</h2>
+        <p>Skriv dig op for at deltage i kommende events og aktiviteter.</p>
     </div>
+
+    <div class="info-card ">
+        <h2>Åben hver fredag!</h2>
+        <p>Kom og oplev vores spændende aktiviteter hver fredag.</p>
+    </div>
+
 
     
 </section>
