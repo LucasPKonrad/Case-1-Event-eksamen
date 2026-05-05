@@ -1,6 +1,7 @@
+using Case_1_Event_eksamen.Pages;
+using Case_1_Event_eksamen.Pages.Data;
 using Case_1_Event_eksamen.Pages.Services;
 using Microsoft.EntityFrameworkCore;
-using Case_1_Event_eksamen.Pages.Data;
 
 
 namespace Case_1_Event_eksamen
@@ -19,6 +20,7 @@ namespace Case_1_Event_eksamen
             builder.Services.AddScoped<UserService>();
             builder.Services.AddSession();
             builder.Services.AddScoped<EventService>();
+            builder.Services.AddScoped<Eventbooking>();
             builder.Services.AddDbContext<AppDbContexxt>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
             

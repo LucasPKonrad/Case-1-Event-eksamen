@@ -1,0 +1,255 @@
+﻿@page "/EventBooking"
+@model EventModel
+@{
+    ViewData["Title"] = "Events Kalender";
+
+    var idag = DateTime.Today;
+
+    int nuværendeMåned = int.TryParse(Request.Query["måned"], out int m) ? m : idag.Month;
+    int nuværendeÅr = int.TryParse(Request.Query["år"], out int y) ? y : idag.Year;
+
+    int dageiMåned = DateTime.DaysInMonth(nuværendeÅr, nuværendeMåned);
+    int startDag = (int)new DateTime(nuværendeÅr, nuværendeMåned, 1).DayOfWeek;
+    startDag = (startDag == 0) ? 6 : startDag - 1;
+
+    var nuværendeDato = new DateTime(nuværendeÅr, nuværendeMåned, 1);
+    var forrigeMåned = nuværendeDato.AddMonths(-1);
+    var næsteMåned = nuværendeDato.AddMonths(1);
+
+    int brugerId = Model.IndloggetBrugerId;
+}
+
+<style>
+    table { border-collapse: collapse; width: 700px; }
+    th { background-color: green; color: white; padding: 10px; text-align: center; width: 100px; }
+    td { border: 1px solid white; height: 100px; width: 100px; vertical-align: top; padding: 5px; }
+    .day-number { font-weight: bold; margin-bottom: 3px; }
+    .idag { background-color: white; border: 2px solid green; }
+    .book-btn { display: block; width: 100%; background-color: green; color: white; border: none; padding: 3px; cursor: pointer; font-size: 11px; border-radius: 4px; margin-top: 3px; }
+    .book-btn:hover { background-color: darkgreen; }
+    .event-label { display: block; background-color: white; color: green; font-size: 10px; border-radius: 3px; padding: 2px 3px; margin-top: 2px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; cursor: pointer; }
+    .event-label:hover { text-decoration: underline; }
+    .nav-buttons { display: flex; align-items: center; gap: 20px; margin-bottom: 10px; }
+    .nav-btn { background-color: green; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px; font-size: 16px; text-decoration: none; }
+    .nav-btn:hover { background-color: darkgreen; }
+    .modal { display: none; position: fixed; top: 20%; left: 35%; background-color: white; border: 2px solid green; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 999; min-width: 300px; }
+    .modal h3 { margin-top: 0; }
+    .modal input { width: 100%; padding: 6px; margin: 4px 0 10px 0; box-sizing: border-box; }
+    .modal label { font-weight: bold; font-size: 13px; }
+    .modal button { background-color: green; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px; margin-right: 5px; }
+    .modal button.slet-btn { background-color: red; }
+    .modal button.framelding-btn { background-color: orange; }
+    .modal button.annuller { background-color: gray; }
+    .fejl { color: red; font-size: 13px; }
+    .detalje-række { padding: 5px 0; font-size: 14px; border-bottom: 1px solid #eee; }
+    .detalje-label { color: gray; font-size: 12px; }
+    .fuldt-badge { font-size: 10px; background: red; color: white; border-radius: 3px; padding: 1px 4px; }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["Besked"] != null)
+{
+    <p style="color:green; font-weight:bold; background: white; padding:10px; border-radius:6px;">@TempData["Besked"]</p>
+}
+
+@if (Model.BekræftelseBesked != null)
+{
+    <p style="color:green; font-weight:bold; background: white; padding:10px; border-radius:6px;">✓ @Model.BekræftelseBesked</p>
+}
+
+<div class="nav-buttons">
+    <a class="nav-btn" href="?måned=@forrigeMåned.Month&år=@forrigeMåned.Year">&#8592; Forrige</a>
+    <h2 style="margin:0">@nuværendeDato.ToString("MMMM yyyy")</h2>
+    <a class="nav-btn" href="?måned=@næsteMåned.Month&år=@næsteMåned.Year">Næste &#8594;</a>
+</div>
+
+<table>
+    <tr>
+        <th>Man</th><th>Tir</th><th>Ons</th><th>Tor</th><th>Fre</th><th>Lør</th><th>Søn</th>
+    </tr>
+    @{
+        int dag = 1;
+        int totalCeller = startDag + dageiMåned;
+        int rækker = (int)Math.Ceiling(totalCeller / 7.0);
+
+        for (int række = 0; række < rækker; række++)
+        {
+            <tr>
+            @for (int kolonne = 0; kolonne < 7; kolonne++)
+            {
+                int celleNummer = række * 7 + kolonne;
+                if (celleNummer < startDag || dag > dageiMåned)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    bool erIdag = (dag == idag.Day && nuværendeMåned == idag.Month && nuværendeÅr == idag.Year);
+                    string cssKlasse = erIdag ? "idag" : "";
+                    int dagKopi = dag;
+
+                    var dagensEvents = Model.MånedsEvents
+                        .Where(e => e.StartTime.Day == dagKopi)
+                        .ToList();
+
+                    <td class="@cssKlasse">
+                        <div class="day-number">@dag</div>
+                        @foreach (var ev in dagensEvents)
+                        {
+                            string evStart = ev.StartTime.ToString("HH:mm");
+                            string evSlut = ev.EndTime.ToString("HH:mm");
+                            int tilmeldte = ev.Registrations.Count;
+                            int maks = ev.MaxParticipants ?? 0;
+                            bool erTilmeldt = ev.Registrations.Any(r => r.UserId == brugerId);
+                            bool erFuldt = ev.MaxParticipants.HasValue && tilmeldte >= maks;
+                            string pladserTekst = ev.MaxParticipants.HasValue ? $"{tilmeldte}/{maks}" : "";
+
+                            <span class="event-label"
+                                  onclick='visEvent(@ev.Id, @Json.Serialize(ev.Title), "@evStart", "@evSlut", @tilmeldte, @maks, @(erTilmeldt ? "true" : "false"), @(erFuldt ? "true" : "false"))'>
+                                🗓 @evStart @ev.Title @if (pladserTekst != "") { <text>(@pladserTekst)</text> }
+                                @if (erFuldt) { <span class="fuldt-badge">Fuldt</span> }
+                            </span>
+                        }
+                        <button class="book-btn" onclick="åbnModal(@dag)">+ Book</button>
+                    </td>
+                    dag++;
+                }
+            }
+            </tr>
+        }
+    }
+</table>
+
+<!-- Booking Modal -->
+<div class="modal" id="bookingModal">
+    <form method="post" asp-page="/Booking Event">
+        <h3>Book Event - <span id="modalDato"></span></h3>
+        <input type="hidden" name="NyEvent.StartTime" id="hiddenStartTime" />
+        <input type="hidden" name="NyEvent.EndTime" id="hiddenEndTime" />
+        <label>Eventnavn:</label>
+        <input type="text" name="NyEvent.Title" id="eventNavn" placeholder="f.eks. studentertur" required />
+        <label>Beskrivelse (valgfrit):</label>
+        <input type="text" name="NyEvent.Description" id="eventBeskrivelse" placeholder="f.eks. sommerfest ved søen" />
+        <label>Starttidspunkt:</label>
+        <input type="time" id="startTid" />
+        <label>Sluttidspunkt:</label>
+        <input type="time" id="slutTid" />
+        <label>Maks deltagere (valgfrit):</label>
+        <input type="number" name="NyEvent.MaxParticipants" id="maksDeltagere" min="1" placeholder="f.eks. 10" />
+        <div id="tidFejl" class="fejl"></div>
+        <br />
+        <button type="button" onclick="gemBooking()">Gem</button>
+        <button type="button" class="annuller" onclick="lukModal()">Annuller</button>
+    </form>
+</div>
+
+<!-- Detalje Modal -->
+<div class="modal" id="detaljeModal">
+    <h3>📋 Event Detaljer</h3>
+    <div class="detalje-række">
+        <div class="detalje-label">Navn</div>
+        <div id="detNavn"></div>
+    </div>
+    <div class="detalje-række">
+        <div class="detalje-label">Starttidspunkt</div>
+        <div id="detStart"></div>
+    </div>
+    <div class="detalje-række">
+        <div class="detalje-label">Sluttidspunkt</div>
+        <div id="detSlut"></div>
+    </div>
+    <div class="detalje-række">
+        <div class="detalje-label">Deltagere</div>
+        <div id="detDeltagere"></div>
+    </div>
+    <br />
+
+    <!-- Tilmeld form -->
+    <form method="post" asp-page-handler="Tilmeld" id="tilmeldForm">
+        <input type="hidden" name="eventId" id="tilmeldId" />
+        <input type="hidden" name="måned" value="@nuværendeMåned" />
+        <input type="hidden" name="år" value="@nuværendeÅr" />
+        <button type="submit" id="tilmeldBtn">✅ Tilmeld</button>
+    </form>
+
+    <!-- Framelding form -->
+    <form method="post" asp-page-handler="FraMeld" id="frameldForm" style="display:inline">
+        <input type="hidden" name="eventId" id="frameldId" />
+        <input type="hidden" name="måned" value="@nuværendeMåned" />
+        <input type="hidden" name="år" value="@nuværendeÅr" />
+        <button type="submit" id="frameldBtn" class="framelding-btn">❌ Framelding</button>
+    </form>
+
+    <!-- Slet form -->
+    <form method="post" asp-page-handler="Slet" id="sletForm" style="display:inline">
+        <input type="hidden" name="id" id="sletId" />
+        <input type="hidden" name="måned" value="@nuværendeMåned" />
+        <input type="hidden" name="år" value="@nuværendeÅr" />
+        <button type="submit" class="slet-btn">🗑 Slet</button>
+    </form>
+
+    <button type="button" class="annuller" onclick="lukDetalje()">Luk</button>
+</div>
+
+<script>
+    var valgtDag = 1;
+
+    function visEvent(id, navn, start, slut, tilmeldte, maks, erTilmeldt, erFuldt) {
+        document.getElementById('detNavn').innerText = navn;
+        document.getElementById('detStart').innerText = start;
+        document.getElementById('detSlut').innerText = slut;
+        document.getElementById('detDeltagere').innerText = maks > 0 ? tilmeldte + ' / ' + maks + ' pladser' : 'Ingen begrænsning';
+
+        document.getElementById('sletId').value = id;
+        document.getElementById('tilmeldId').value = id;
+        document.getElementById('frameldId').value = id;
+
+        // Vis kun tilmeld eller framelding
+        document.getElementById('tilmeldForm').style.display = erTilmeldt ? 'none' : (erFuldt ? 'none' : 'inline');
+        document.getElementById('frameldForm').style.display = erTilmeldt ? 'inline' : 'none';
+
+        if (erFuldt && !erTilmeldt) {
+            document.getElementById('detDeltagere').innerText += ' (Fuldt!)';
+        }
+
+        document.getElementById('detaljeModal').style.display = 'block';
+    }
+
+    function lukDetalje() {
+        document.getElementById('detaljeModal').style.display = 'none';
+    }
+
+    function åbnModal(dag) {
+        valgtDag = dag;
+        document.getElementById('modalDato').innerText = dag + '. @nuværendeDato.ToString("MMMM yyyy")';
+        document.getElementById('bookingModal').style.display = 'block';
+        document.getElementById('eventNavn').value = '';
+        document.getElementById('startTid').value = '';
+        document.getElementById('slutTid').value = '';
+        document.getElementById('maksDeltagere').value = '';
+        document.getElementById('tidFejl').innerText = '';
+    }
+
+    function lukModal() {
+        document.getElementById('bookingModal').style.display = 'none';
+    }
+
+    function gemBooking() {
+        var navn = document.getElementById('eventNavn').value;
+        var start = document.getElementById('startTid').value;
+        var slut = document.getElementById('slutTid').value;
+
+        if (navn === '') { document.getElementById('tidFejl').innerText = 'Skriv et eventnavn!'; return; }
+        if (start === '' || slut === '') { document.getElementById('tidFejl').innerText = 'Vælg både start- og sluttidspunkt!'; return; }
+        if (slut <= start) { document.getElementById('tidFejl').innerText = 'Sluttidspunkt skal være efter starttidspunkt!'; return; }
+
+        var dagStr = String(valgtDag).padStart(2, '0');
+        var månedStr = String(@nuværendeMåned).padStart(2, '0');
+        var dato = '@nuværendeÅr-' + månedStr + '-' + dagStr;
+
+        document.getElementById('hiddenStartTime').value = dato + 'T' + start;
+        document.getElementById('hiddenEndTime').value = dato + 'T' + slut;
+        document.querySelector('#bookingModal form').submit();
+    }
+</script>
