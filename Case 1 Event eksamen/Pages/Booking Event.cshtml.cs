@@ -16,23 +16,23 @@ namespace Case_1_Event_eksamen.Pages
 
         public void GemEvent(Event nyEvent)
         {
-            _context.Event.Add(nyEvent);
+            _context.Events.Add(nyEvent);
             _context.SaveChanges();
         }
 
         public void SletEvent(int id)
         {
-            var ev = _context.Event.Find(id);
+            var ev = _context.Events.Find(id);
             if (ev != null)
             {
-                _context.Event.Remove(ev);
+                _context.Events.Remove(ev);
                 _context.SaveChanges();
             }
         }
 
         public List<Event> HentEventsForMåned(int år, int måned)
         {
-            return _context.Event
+            return _context.Events
                 .Include(e => e.Registrations)
                 .Where(e => e.StartTime.Year == år && e.StartTime.Month == måned)
                 .ToList();
@@ -40,7 +40,7 @@ namespace Case_1_Event_eksamen.Pages
 
         public string TilmeldEvent(int eventId, int userId)
         {
-            var ev = _context.Event
+            var ev = _context.Events
                 .Include(e => e.Registrations)
                 .FirstOrDefault(e => e.Id == eventId);
 
@@ -111,7 +111,6 @@ namespace Case_1_Event_eksamen.Pages
             if (HttpContext.Session.GetString("UserName") == null)
                 return RedirectToPage("/Account/Login");
 
-         
             IndloggetBrugerId = HttpContext.Session.GetInt32("UserId") ?? 0;
             int måned = NyEvent.StartTime != default ? NyEvent.StartTime.Month : DateTime.Today.Month;
             int år = NyEvent.StartTime != default ? NyEvent.StartTime.Year : DateTime.Today.Year;
@@ -129,6 +128,7 @@ namespace Case_1_Event_eksamen.Pages
                 return Page(); 
             }
 
+            
             _eventbooking.GemEvent(NyEvent);
 
             MånedsEvents = _eventbooking.HentEventsForMåned(NyEvent.StartTime.Month, NyEvent.StartTime.Year);

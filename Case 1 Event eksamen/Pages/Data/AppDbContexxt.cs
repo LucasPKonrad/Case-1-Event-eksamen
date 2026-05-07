@@ -11,7 +11,7 @@ namespace Case_1_Event_eksamen.Pages.Data
         {
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Event> Event { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Registration> Registrations { get; set; }
 
 

@@ -24,7 +24,7 @@ public class EventService
             MaxParticipants = input.MaxParticipants
         };
 
-        _context.Event.Add(newEvent);
+        _context.Events.Add(newEvent);
         _context.SaveChanges();
 
         return true;
@@ -32,7 +32,7 @@ public class EventService
 
     public List<Event> GetUpcomingEvents()
     {
-        return _context.Event
+        return _context.Events
             .Where(e => e.StartTime >= DateTime.Now)
             .OrderBy(e => e.StartTime)
             .ToList();
