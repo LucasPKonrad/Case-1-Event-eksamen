@@ -1,0 +1,33 @@
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(0, 100px));
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.info-card {
+    width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.info-card h2 {
+    font-size: 0.65rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.info-card p {
+    font-size: 0.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}

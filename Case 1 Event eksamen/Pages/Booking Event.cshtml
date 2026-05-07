@@ -20,9 +20,9 @@
 }
 
 <style>
-    table { border-collapse: collapse; width: 700px; }
+    table { border-collapse: collapse; width: 700px; table-layout: fixed; }
     th { background-color: green; color: white; padding: 10px; text-align: center; width: 100px; }
-    td { border: 1px solid white; height: 100px; width: 100px; vertical-align: top; padding: 5px; }
+    td { border: 1px solid white; height: 100px; width: 100px; vertical-align: top; padding: 5px; overflow: hidden; }
     .day-number { font-weight: bold; margin-bottom: 3px; }
     .idag { background-color: white; border: 2px solid green; }
     .book-btn { display: block; width: 100%; background-color: green; color: white; border: none; padding: 3px; cursor: pointer; font-size: 11px; border-radius: 4px; margin-top: 3px; }
@@ -94,24 +94,26 @@
                         .ToList();
 
                     <td class="@cssKlasse">
-                        <div class="day-number">@dag</div>
-                        @foreach (var ev in dagensEvents)
-                        {
-                            string evStart = ev.StartTime.ToString("HH:mm");
-                            string evSlut = ev.EndTime.ToString("HH:mm");
-                            int tilmeldte = ev.Registrations.Count;
-                            int maks = ev.MaxParticipants ?? 0;
-                            bool erTilmeldt = ev.Registrations.Any(r => r.UserId == brugerId);
-                            bool erFuldt = ev.MaxParticipants.HasValue && tilmeldte >= maks;
-                            string pladserTekst = ev.MaxParticipants.HasValue ? $"{tilmeldte}/{maks}" : "";
+                        <div class="td-indhold">
+                            <div class="day-number">@dag</div>
+                            @foreach (var ev in dagensEvents)
+                            {
+                                string evStart = ev.StartTime.ToString("HH:mm");
+                                string evSlut = ev.EndTime.ToString("HH:mm");
+                                int tilmeldte = ev.Registrations.Count;
+                                int maks = ev.MaxParticipants ?? 0;
+                                bool erTilmeldt = ev.Registrations.Any(r => r.UserId == brugerId);
+                                bool erFuldt = ev.MaxParticipants.HasValue && tilmeldte >= maks;
+                                string pladserTekst = ev.MaxParticipants.HasValue ? $"{tilmeldte}/{maks}" : "";
 
-                            <span class="event-label"
-                                  onclick='visEvent(@ev.Id, @Json.Serialize(ev.Title), "@evStart", "@evSlut", @tilmeldte, @maks, @(erTilmeldt ? "true" : "false"), @(erFuldt ? "true" : "false"))'>
-                                🗓 @evStart @ev.Title @if (pladserTekst != "") { <text>(@pladserTekst)</text> }
-                                @if (erFuldt) { <span class="fuldt-badge">Fuldt</span> }
-                            </span>
-                        }
-                        <button class="book-btn" onclick="åbnModal(@dag)">+ Book</button>
+                                <span class="event-label"
+                                      onclick='visEvent(@ev.Id, @Json.Serialize(ev.Title), "@evStart", "@evSlut", @tilmeldte, @maks, @(erTilmeldt ? "true" : "false"), @(erFuldt ? "true" : "false"))'>
+                                    🗓 @evStart @ev.Title @if (pladserTekst != "") { <text>(@pladserTekst)</text> }
+                                    @if (erFuldt) { <span class="fuldt-badge">Fuldt</span> }
+                                </span>
+                            }
+                            <button class="book-btn" onclick="åbnModal(@dag)">+ Book</button>
+                        </div>
                     </td>
                     dag++;
                 }
