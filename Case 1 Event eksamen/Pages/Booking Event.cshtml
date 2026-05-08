@@ -19,6 +19,32 @@
     int brugerId = Model.IndloggetBrugerId;
 }
 
+<div class="events-page-container">
+    <h2>Mine Events</h2>
+
+    @if (Model.MyEvents.Any())
+    {
+        <ul>
+            @foreach (var ev in Model.MyEvents)
+            {
+                <li>
+                    <strong>@ev.Title</strong> - @ev.StartTime.ToString("dd MMMM yyyy HH:mm")
+                    <form method="post" asp-page-handler="FraMeld" style="display:inline">
+                        <input type="hidden" name="eventId" value="@ev.Id" />
+                        <input type="hidden" name="måned" value="@nuværendeMåned" />
+                        <input type="hidden" name="år" value="@nuværendeÅr" />
+                        <button type="submit" class="framelding-btn">Frameld</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Du er ikke tilmeldt nogen events.</p>
+    }
+
+
 <style>
     table { border-collapse: collapse; width: 700px; table-layout: fixed; }
     th { background-color: green; color: white; padding: 10px; text-align: center; width: 100px; }
@@ -52,6 +78,8 @@
 {
     <p style="color:green; font-weight:bold; background: white; padding:10px; border-radius:6px;">@TempData["Besked"]</p>
 }
+
+
 
 @if (Model.BekræftelseBesked != null)
 {
@@ -112,7 +140,10 @@
                                     @if (erFuldt) { <span class="fuldt-badge">Fuldt</span> }
                                 </span>
                             }
+                            @if (HttpContext.Session.GetString("UserRole") == "Admin")
+                            {
                             <button class="book-btn" onclick="åbnModal(@dag)">+ Book</button>
+                            }
                         </div>
                     </td>
                     dag++;
@@ -122,6 +153,8 @@
         }
     }
 </table>
+
+
 
 <!-- Booking Modal -->
 <div class="modal" id="bookingModal">
@@ -143,8 +176,12 @@
         <br />
         <button type="button" onclick="gemBooking()">Gem</button>
         <button type="button" class="annuller" onclick="lukModal()">Annuller</button>
+
     </form>
+    
 </div>
+
+
 
 <!-- Detalje Modal -->
 <div class="modal" id="detaljeModal">
@@ -193,6 +230,8 @@
 
     <button type="button" class="annuller" onclick="lukDetalje()">Luk</button>
 </div>
+
+
 
 <script>
     var valgtDag = 1;
@@ -255,3 +294,4 @@
         document.querySelector('#bookingModal form').submit();
     }
 </script>
+</div>

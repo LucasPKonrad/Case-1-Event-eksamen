@@ -175,3 +175,95 @@ body {
     border-radius: 8px;
     font-size: 14px;
 }
+
+.events-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.users-page-container {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 35px 20px;
+}
+
+.users-header {
+    margin-bottom: 30px;
+}
+
+.users-header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.users-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.user-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.user-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #1f7a5c;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-info h2 {
+    font-size: 19px;
+    margin: 0 0 4px 0;
+}
+
+.user-info p {
+    margin: 0 0 8px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.role-badge.student {
+    background: #e6f6ef;
+    color: #1f7a5c;
+}
+
+.role-badge.admin {
+    background: #fff0d6;
+    color: #9a5a00;
+}

@@ -2,10 +2,12 @@
 using Case_1_Event_eksamen.Pages.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Case_1_Event_eksamen.Pages
 {
+
     public class Eventbooking
     {
         private readonly AppDbContexxt _context;
@@ -35,6 +37,16 @@ namespace Case_1_Event_eksamen.Pages
             return _context.Events
                 .Include(e => e.Registrations)
                 .Where(e => e.StartTime.Year == år && e.StartTime.Month == måned)
+                .ToList();
+        }
+
+        public List<Event> HentMineEvents(int userId)
+        {
+            return _context.Registrations
+                .Include(r => r.Event)
+                .Where(r => r.UserId == userId)
+                .Select(r => r.Event!)
+                .OrderBy(e => e.StartTime)
                 .ToList();
         }
 
@@ -85,6 +97,7 @@ namespace Case_1_Event_eksamen.Pages
         {
             _eventbooking = eventbooking;
         }
+        public List<Event> MyEvents { get; set; } = new();
 
         [BindProperty]
         public Event NyEvent { get; set; } = new();
@@ -100,10 +113,13 @@ namespace Case_1_Event_eksamen.Pages
 
             IndloggetBrugerId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
+            MyEvents = _eventbooking.HentMineEvents(IndloggetBrugerId);
+
             int måned = int.TryParse(Request.Query["måned"], out int m) ? m : DateTime.Today.Month;
             int år = int.TryParse(Request.Query["år"], out int y) ? y : DateTime.Today.Year;
             MånedsEvents = _eventbooking.HentEventsForMåned(år, måned);
             return Page();
+
         }
 
         public IActionResult OnPost()
@@ -120,6 +136,12 @@ namespace Case_1_Event_eksamen.Pages
             {
                 ModelState.AddModelError("", "Skriv venligst et eventnavn!");
                 return Page(); 
+            }
+
+            if (string.IsNullOrWhiteSpace(NyEvent.Description))
+            {
+                ModelState.AddModelError("", "Skriv venligst en eventbeskrivelse!");
+                return Page();
             }
 
             if (NyEvent.EndTime <= NyEvent.StartTime)
