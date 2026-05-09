@@ -19,6 +19,7 @@ namespace Case_1_Event_eksamen
             builder.Services.AddSingleton<PasswordHasher>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<EventService>();
             builder.Services.AddScoped<Eventbooking>();
             builder.Services.AddDbContext<AppDbContexxt>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

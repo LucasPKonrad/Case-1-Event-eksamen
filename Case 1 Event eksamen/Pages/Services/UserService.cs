@@ -13,6 +13,11 @@ namespace Case_1_Event_eksamen.Pages.Services // Service class ansvarlig for hå
             return _context.Users.Count();
         }
 
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _context.Users.ToList();
+        }
+
         public User? Login(LoginInput input) // Returnerer null hvis login mislykkes
         {
             string email = input.Email.ToLower();
@@ -69,7 +74,32 @@ namespace Case_1_Event_eksamen.Pages.Services // Service class ansvarlig for hå
             Console.WriteLine($"Total users: {_context.Users.Count()}");
             return true;
         }
-        
+
+        public bool UpdateUser(int id, string name, string email)
+        {
+            // Finder brugeren
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            // Hvis brugeren ikke findes
+            if (user == null)
+           return false;
+
+            //tjeks om email allerede findes for en anden bruger
+            var emailuser = _context.Users.FirstOrDefault(u => u.Email == email);
+
+            // Hvis email allerede findes for en anden bruger
+            if (emailuser != null && emailuser.Id != id)
+           return false;
+            
+            // Opdater brugeren
+            user.Name = name;
+            user.Email = email;
+
+            // Gemmer ændringer i databasen
+            _context.SaveChanges();
+           return true;
+        }
+
+
     }
-    
 }
