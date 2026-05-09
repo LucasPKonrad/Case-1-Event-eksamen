@@ -1,0 +1,37 @@
+﻿@page
+@model Case_1_Event_eksamen.Pages.UserPageModel
+
+<div class="user-page-container">
+    <div class="users-header">
+        <h1>Brugere</h1>
+        <p>Find studenter og admins forbundet via Zealand Zoo</p>
+    </div>
+
+    <div class="users-grid">
+        @foreach (var user in Model.Users)
+        {
+            <div class="user-card">
+                <div class="user-avatar">
+                    @user.Name.Substring(0,1).ToUpper()
+                </div>
+
+                <div class="user-info">
+                    <h2>@user.Name</h2>
+                    <p>@user.Email</p>
+
+                    @if (user.Role.ToString() == "Admin")
+                    {
+                        <span class="role-badge admin">Admin</span>
+                    }
+                    else
+                    {
+                        <span class="role-badge student">Student</span>
+                    }
+                </div>
+                
+            </div>
+        }
+
+    </div>
+
+</div>
