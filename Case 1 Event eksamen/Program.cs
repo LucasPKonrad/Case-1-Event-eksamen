@@ -22,6 +22,7 @@ namespace Case_1_Event_eksamen
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<EventService>();
             builder.Services.AddScoped<Eventbooking>();
+            builder.Services.AddScoped<EmailService>();
             builder.Services.AddDbContext<AppDbContexxt>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
             

@@ -1,3 +1,4 @@
+using Case_1_Event_eksamen.Pages.Data;
 using Case_1_Event_eksamen.Pages.Models;
 using Case_1_Event_eksamen.Pages.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Case_1_Event_eksamen.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly UserService _userService;
+        private readonly AppDbContexxt _context;
 
-        public RegisterModel(UserService userService)
+        public RegisterModel(UserService userService, AppDbContexxt context)
         {
             _userService = userService;
+            _context = context;
         }
 
         [BindProperty]
@@ -43,6 +46,16 @@ namespace Case_1_Event_eksamen.Pages.Account
             {
                 ErrorMessage = "A user with this email already exists.";
                 return Page();
+            }
+
+            if (Input.TilmeldNyhedsbrev)
+            {
+                bool eksisterer = _context.NewsletterSubscribers.Any(s => s.Email == Input.Email);
+                if (!eksisterer)
+                {
+                    _context.NewsletterSubscribers.Add(new NewsletterSubscriber { Email = Input.Email });
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToPage("/Account/Login");
