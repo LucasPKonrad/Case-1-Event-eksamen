@@ -1,7 +1,7 @@
 ﻿@page
 @model Case_1_Event_eksamen.Pages.Account.RegisterModel
 
-<h1>Create account</h1>
+<h1>Opret konto</h1>
 
 @if (Model.ErrorMessage != null)
 {
@@ -10,7 +10,7 @@
 
 <form method="post">
     <div>
-        <label>Name</label>
+        <label>Navn</label>
         <input asp-for="Input.Name" />
     </div>
 
@@ -20,12 +20,12 @@
     </div>
 
     <div>
-        <label>Password</label>
-        <input asp-for="Input.Password" type="password" placeholder="Minimum 6 characters"/>
+        <label>Adgangskode</label>
+        <input asp-for="Input.Password" type="password" placeholder="Minimum 6 tegn"/>
         <span asp-validation-for="Input.Password" style="color:red"></span>
         
     </div>
 
-    <button type="submit">Register</button>
+    <button type="submit">Registrer</button>
 </form>
 

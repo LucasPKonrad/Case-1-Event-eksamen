@@ -1,6 +1,6 @@
 ﻿@page
 @model Case_1_Event_eksamen.Pages.Account.LoginModel
-<h1>Login</h1>
+<h1>Log ind</h1>
 @if (Model.ErrorMessage != null)
 {
     <p style="color:red">@Model.ErrorMessage</p>
@@ -13,9 +13,9 @@
     </div>
 
     <div>
-        <label>Password</label>
+        <label>Adgangskode</label>
         <input asp-for="Input.Password" type="password" />
     </div>
 
-    <button type="submit">Login</button>
+    <button type="submit">Log ind</button>
 </form>
