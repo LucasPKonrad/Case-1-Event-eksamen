@@ -27,7 +27,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Booking Event">Events</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSide/Userside">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSide/Userside">Brugere</a>
                         </li>
                     </ul>
 
@@ -36,16 +36,16 @@
                         @if (Context.Session.GetString("UserName") != null)
                         {
                             <span class="navbar-text">
-                                Logged in as <strong>@Context.Session.GetString("UserName") (@Context.Session.GetString("UserRole"))</strong>
+                                Logget ind som <strong>@Context.Session.GetString("UserName") (@Context.Session.GetString("UserRole"))</strong>
                             </span>
-                            <a asp-page="/Account/Logout" class="btn btn-danger btn-sm">Logout</a>
+                            <a asp-page="/Account/Logout" class="btn btn-danger btn-sm">Log ud</a>
                         }
                         else
                         {
                             <div class="d-flex align-items-center gap-3">
                             <span class="navbar-text">Du er ikke logget ind.</span>
-                                <a asp-page="/Account/Login" class="btn btn-outline-primary btn-sm">Login</a>
-                                <a asp-page="/Account/Register" class="btn btn-primary btn-sm">Register</a>
+                                <a asp-page="/Account/Login" class="btn btn-outline-primary btn-sm">Log ind</a>
+                                <a asp-page="/Account/Register" class="btn btn-primary btn-sm">Registrer</a>
                             </div>
                         }
                     </ul>
@@ -58,13 +58,7 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Case_1_Event_eksamen - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
