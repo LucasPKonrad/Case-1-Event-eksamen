@@ -76,33 +76,25 @@
         <h3>Skriv dig op til vores Nyhedsbrev</h3>
         <p>Få besked om nye events i den kommende måned</p>
 
-        <input type="email"
-               id="emailInput"
-               placeholder="Email"
-               style="padding:10px; width:80%; margin:10px auto; display:block;" />
-        
-        <button onclick="handleSignup()"
-                style="padding:10px 25px; margin-right:10px;">
-            Abonner
-        </button>
-        
-        <button onclick="document.getElementById('newsletterModal').style.display='none'"
-                style="padding:10px 25px;">
-            Annuller
-        </button>
+        <form method="post" asp-page-handler="Subscribe">
+            <input type="email"
+                   name="email"
+                   placeholder="Email"
+                   required
+                   style="padding:10px; width:80%; margin:10px auto; display:block;" />
 
-        <p id="successMessage" style="color:green; margin-top:15px; display:none;">
-            Tak for at skrive dig op
-        </p>
+            <button type="submit" style="padding:10px 25px; margin-right:10px;">Subscribe</button>
+            <button type="button" onclick="document.getElementById('newsletterModal').style.display='none'"
+                    style="padding:10px 25px;">Cancel</button>
+        </form>
+
+        @if (Model.SubscribeSuccess)
+        {
+            <p style="color:green; margin-top:15px;">Tak for at skrive dig op!</p>
+        }
     </div>
 </div>
 
-<script>
-    function handleSignup() {
-        const email = document.getElementById('emailInput').value;
-        if (email) {
-            document.getElementById('successMessage').style.display = 'block';
-            document.getElementById('emailInput').value = '';
-        }
-    }
-</script>
+<form method="post" asp-page-handler="TestEmail">
+    <button type="submit">Send test-mail</button>
+</form>

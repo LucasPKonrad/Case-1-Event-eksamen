@@ -13,5 +13,7 @@ namespace Case_1_Event_eksamen.Pages.Models
         [Required]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         public string Password { get; set; } = string.Empty;
+
+        public bool TilmeldNyhedsbrev { get; set; }
     }
 }
