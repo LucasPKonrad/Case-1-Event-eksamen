@@ -163,6 +163,9 @@ namespace Case_1_Event_eksamen.Pages
             if (HttpContext.Session.GetString("UserName") == null)
                 return RedirectToPage("/Account/Login");
 
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+                return RedirectToPage("/EventBooking", new { måned, år });
+
             _eventbooking.SletEvent(id);
             return RedirectToPage(new { måned, år });
         }

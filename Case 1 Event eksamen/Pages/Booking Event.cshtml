@@ -142,7 +142,7 @@
                             }
                             @if (HttpContext.Session.GetString("UserRole") == "Admin")
                             {
-                            <button class="book-btn" onclick="åbnModal(@dag)">Book</button>
+                            <button class="book-btn" onclick="åbnModal(@dag)">Opret</button>
                             }
                         </div>
                     </td>
@@ -221,13 +221,17 @@
     </form>
 
     <!-- Slet form -->
+    
     <form method="post" asp-page-handler="Slet" id="sletForm" style="display:inline">
         <input type="hidden" name="id" id="sletId" />
         <input type="hidden" name="måned" value="@nuværendeMåned" />
         <input type="hidden" name="år" value="@nuværendeÅr" />
-        <button type="submit" class="slet-btn">Slet</button>
+        @if (HttpContext.Session.GetString("UserRole") == "Admin")
+        {
+             <button type="submit" class="slet-btn">Slet</button>
+        }
     </form>
-
+    
     <button type="button" class="annuller" onclick="lukDetalje()">Luk</button>
 </div>
 

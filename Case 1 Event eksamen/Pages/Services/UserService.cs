@@ -2,7 +2,8 @@
 using Case_1_Event_eksamen.Pages.Models;
 
 
-namespace Case_1_Event_eksamen.Pages.Services // Service class ansvarlig for håndtering af brugerrelaterede operationer, såsom login og registrering, ved hjælp af PasswordHasher for sikker passwordhåndtering og AppDbContexxt for databaseadgang
+namespace Case_1_Event_eksamen.Pages.Services 
+    //Service class ansvarlig for håndtering af brugerrelaterede operationer, såsom login og registrering, ved hjælp af PasswordHasher for sikker passwordhåndtering og AppDbContexxt for databaseadgang
 {
     public class UserService
     {
@@ -59,7 +60,7 @@ namespace Case_1_Event_eksamen.Pages.Services // Service class ansvarlig for hå
                 return false;
             }
 
-            var user = new User // Opretter en ny User-objekt med de indtastede oplysninger og hashed password
+            var user = new User // Opretter en ny User objekt med de indtastede oplysninger og hashed password
             {
                 Name = input.Name,
                 Email = input.Email,
@@ -84,14 +85,14 @@ namespace Case_1_Event_eksamen.Pages.Services // Service class ansvarlig for hå
             if (user == null)
            return false;
 
-            //tjeks om email allerede findes for en anden bruger
+            //tjekker om email allerede findes for en anden bruger
             var emailuser = _context.Users.FirstOrDefault(u => u.Email == email);
 
             // Hvis email allerede findes for en anden bruger
             if (emailuser != null && emailuser.Id != id)
            return false;
             
-            // Opdater brugeren
+            // Opdaterer brugeren
             user.Name = name;
             user.Email = email;
 
