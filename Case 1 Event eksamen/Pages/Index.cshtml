@@ -61,6 +61,8 @@
     
 </section>
     
+@if (HttpContext.Session.GetString("UserRole") == "Admin")
+{
     <button onclick="document.getElementById('newsletterModal').style.display='flex'"
             style="padding: 10px 20px; margin-top: 20px; cursor: pointer;">
      Skriv dig op til vores Nyhedsbrev
@@ -98,3 +100,4 @@
 <form method="post" asp-page-handler="TestEmail">
     <button type="submit">Send test-mail</button>
 </form>
+}

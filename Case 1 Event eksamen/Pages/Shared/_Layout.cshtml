@@ -29,6 +29,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/UserSide/Userside">Brugere</a>
                         </li>
+                        @if (Context.Session.GetString("UserRole") == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Newsletter/Index">Newsletter</a>
+                            </li>
+                        }
                     </ul>
 
                     <!-- Right side -->
