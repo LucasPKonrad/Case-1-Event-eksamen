@@ -1,0 +1,44 @@
+﻿@page
+@model Case_1_Event_eksamen.Pages.Admin.CreateEventModel
+
+<h1>Opret Event</h1>
+
+@if (Model.ErrorMessage != null)
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
+
+<div asp-validation-summary="All" style="color:red"></div>
+
+<form method="post">
+    <div>
+        <label>Titel</label>
+        <input asp-for="Input.Title" />
+    </div>
+
+    <div>
+        <label>Beskrivelse</label>
+        <textarea asp-for="Input.Description"></textarea>
+    </div>
+
+    <div>
+        <label>Start Tid</label>
+        <input asp-for="Input.StartTime" type="datetime-local" />
+    </div>
+
+    <div>
+        <label>Slut Tid</label>
+        <input asp-for="Input.EndTime" type="datetime-local" />
+    </div>
+
+    <div>
+        <label>Maks Deltagere</label>
+        <input asp-for="Input.MaxParticipants" type="number" min="1" />
+    </div>
+
+    <button type="submit">Opret Event</button>
+</form>
+
+
+{
+}

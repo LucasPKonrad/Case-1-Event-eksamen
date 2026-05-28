@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Case_1_Event_eksamen</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Zealand Zoo</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,11 +21,39 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Hjem</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Booking Event">Events</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSide/Userside">Brugere</a>
+                        </li>
+                        @if (Context.Session.GetString("UserRole") == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Newsletter/Index">Newsletter</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Right side -->
+                    <ul class="navbar-nav">
+                        @if (Context.Session.GetString("UserName") != null)
+                        {
+                            <span class="navbar-text">
+                                Logget ind som <strong>@Context.Session.GetString("UserName") (@Context.Session.GetString("UserRole"))</strong>
+                            </span>
+                            <a asp-page="/Account/Logout" class="btn btn-danger btn-sm">Log ud</a>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center gap-3">
+                            <span class="navbar-text">Du er ikke logget ind.</span>
+                                <a asp-page="/Account/Login" class="btn btn-outline-primary btn-sm">Log ind</a>
+                                <a asp-page="/Account/Register" class="btn btn-primary btn-sm">Registrer</a>
+                            </div>
+                        }
                     </ul>
                 </div>
             </div>
@@ -36,13 +64,7 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Case_1_Event_eksamen - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,126 @@
+﻿@page
+@model Case_1_Event_eksamen.Pages.UserSide.UsersideModel
+
+@{
+    bool isAdmin = HttpContext.Session.GetString("UserRole") == "Admin";
+}
+
+<div class="row">
+    <!-- STAFF TABEL -->
+    <div class="col-md-6">
+        <h2>Personale</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Email</th>
+                    <th>Rolle</th>
+                    @if (isAdmin)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Admins)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary"
+                                        onclick="openEdit(@user.Id, '@user.Name', '@user.Email')">
+                                    Rediger
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- STUDENTS TABEL -->
+    <div class="col-md-6">
+        <h2>Studenter</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Email</th>
+                    <th>Rolle</th>
+                    @if (isAdmin)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Students)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary"
+                                        onclick="openEdit(@user.Id, '@user.Name', '@user.Email')">
+                                    Rediger
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* Edit *@
+@if (isAdmin)
+{
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rediger bruger</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="post" asp-page-handler="Edit">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <input type="hidden" asp-for="EditId" id="editId" />
+                        <div class="mb-3">
+                            <label class="form-label">Navn</label>
+                            <input asp-for="EditName" id="editName" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input asp-for="EditEmail" id="editEmail" class="form-control" type="email" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuller</button>
+                        <button type="submit" class="btn btn-primary">Gem ændringer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEdit(id, name, email) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editEmail').value = email;
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+    </script>
+}
+
+

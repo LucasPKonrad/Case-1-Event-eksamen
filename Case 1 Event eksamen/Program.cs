@@ -1,3 +1,9 @@
+using Case_1_Event_eksamen.Pages;
+using Case_1_Event_eksamen.Pages.Data;
+using Case_1_Event_eksamen.Pages.Services;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace Case_1_Event_eksamen
 {
     public class Program
@@ -5,11 +11,21 @@ namespace Case_1_Event_eksamen
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
 
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddSingleton<PasswordHasher>();
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<EventService>();
+            builder.Services.AddScoped<Eventbooking>();
+            builder.Services.AddScoped<EmailService>();
+            builder.Services.AddDbContext<AppDbContexxt>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -24,7 +40,7 @@ namespace Case_1_Event_eksamen
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.MapStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();
